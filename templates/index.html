@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block titulo %}Agenda | Inicio{% endblock %}
+
+{% block contenido %}
+
+<section class="tarjeta">
+
+    <h2>Agregar un contacto</h2>
+
+    <form action="{{ url_for('agregar') }}" method="POST">
+
+        <label>Nombre *</label>
+        <input type="text" name="nombre" required maxlength="80">
+
+        <label>Teléfono *</label>
+        <input type="text" name="telefono" required maxlength="25">
+
+        <label>Correo electrónico</label>
+        <input type="email" name="correo" maxlength="120">
+
+        <label>Categoría *</label>
+
+        <select name="categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option>Familia</option>
+            <option>Escuela</option>
+            <option>Trabajo</option>
+            <option>Otro</option>
+        </select>
+
+        <button type="submit">Guardar contacto</button>
+
+    </form>
+
+</section>
+
+<section class="tarjeta">
+
+    <h2>Contactos registrados</h2>
+
+    {% if contactos %}
+
+    <div class="tabla-contenedor">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for contacto in contactos %}
+
+                <tr>
+
+                    <td>{{ contacto.nombre }}</td>
+                    <td>{{ contacto.telefono }}</td>
+                    <td>{{ contacto.correo or "Sin correo" }}</td>
+                    <td>{{ contacto.categoria }}</td>
+
+                    <td class="acciones">
+
+                        <a href="{{ url_for('editar', id=contacto.id) }}">
+                            Editar
+                        </a>
+
+                        <form action="{{ url_for('eliminar', id=contacto.id) }}"
+                              method="POST">
+
+                            <button class="peligro"
+                                type="submit"
+                                onclick="return confirm('¿Seguro que deseas eliminar este contacto?')">
+
+                                Eliminar
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+        <p>Aún no hay contactos. ¡Registra el primero!</p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block titulo %}Agenda de contactos{% endblock %}</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+
+<body>
+
+    <header class="encabezado">
+        <h1>Mi agenda de contactos</h1>
+        <p>Organiza tus contactos en un solo lugar</p>
+    </header>
+
+    <main class="contenedor">
+
+        {% with mensajes = get_flashed_messages() %}
+            {% if mensajes %}
+                {% for mensaje in mensajes %}
+                    <div class="mensaje">{{ mensaje }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block contenido %}{% endblock %}
+
+    </main>
+
+</body>
+</html>
+
